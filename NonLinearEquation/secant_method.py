@@ -1,45 +1,40 @@
 import math
 
 
-def secant_method(x, func, tol):
-    """ Solve non-linear equation by sectant method
+def secant_method(x_lst, func, tol=1e-9, Max_iter=100):
+    """ Solve non-linear equation by sectant method.
 
     Args:
-        x: list, two initial values of the iteration
-        func: the function to be solved
-        tol: double, iteration accurancy
+        x_lst: list/ndarray, two initial values of the iteration
+        func: function object, the function to be solved
+        tol: double, iteration accuracy
+        Max_iter: int, maximum iteration number
 
     Returns:
-        iter_ls: list, the values of the iteration
+        k: int, iteration number
+        x2: double, root of the non-linear equation
     """
-    # iteration
-    x0, x1 = x
-    x2 = x1 - func(x1)*(x1 - x0)/(func(x1) - func(x0))
+    # initial values
+    x0, x1 = x_lst
+    # first iteration
+    k = 1
+    x2 = x1 - func(x1) * (x1 - x0) / (func(x1) - func(x0))
 
-    iter_ls = []
-    while math.fabs(x2 - x1) >= tol:
-        iter_ls.append(x2)
+    # iteration
+    while math.fabs(x2 - x1) >= tol and k < Max_iter:
+        k += 1
         x0, x1 = x1, x2
         x2 = x1 - func(x1)*(x1 - x0)/(func(x1) - func(x0))
 
-    return iter_ls
+    return k, x2
 
 
 def f(x):
-    """ The function to be solved
-
-    Args:
-        x: double, dependent variable
-
-    Returns:
-        y: double, the value of the function at x
-    """
-    y = x**3 + x**2 - 3*x -3
-    return y
+    return x**3 + x**2 - 3*x -3
 
 
 if __name__ == '__main__':
-    iter_ls = secant_method(x=[1.5, 2], func=f, tol=1e-6)
-    for item in iter_ls:
-        print(item)
+    n, x = secant_method([1.5, 2], f, 1e-6)
+    print(f"The root of the non-linear equation is {x:.7f} by secant method.")
+    print(f"Iteration number is {n}.")
 
