@@ -1,45 +1,40 @@
 import math
 
 
-def one_point_chord(x, func, tol):
-    """ Solve the non-linear equation by one point chord
+def one_point_chord(x_lst, func, tol=1e-9, Max_iter=100):
+    """ Solve the non-linear equation by one point chord.
 
     Args:
-        x: list, two initial values of the iteration
-        func: the non-linear function to be solved
-        tol: double, the iteration accurancy
+        x_lst: list/ndarray, two initial values of the iteration
+        func: function object, the non-linear function to be solved
+        tol: double, the iteration accuracy
+        Max_iter: int, maximum iteration number
 
     Returns:
-        iter_ls: list, the values of the iteration
+        k: int, iteration number
+        v: double, root of the non-linear equation
     """
+    # initial values
+    x0, u = x_lst
+    # first iteration
+    k = 1
+    v = u - func(u) * (u - x0) / (func(u) - func(x0))
+
     # iteration
-    x0, u = x
-    v = u - func(u)*(u - x0)/(func(u) - func(x0))
-
-    iter_ls = []
-    while math.fabs(v - u) >= tol:
-        iter_ls.append(v)
+    while math.fabs(v - u) >= tol and k < Max_iter:
+        k += 1
         u = v
-        v = u - func(u)*(u - x0)/(func(u) - func(x0))
+        v = u - func(u) * (u - x0) / (func(u) - func(x0))
 
-    return iter_ls
+    return k, v
 
 
 def f(x):
-    """ The non-linear equation to be solved
-
-    Args:
-        x: double, dependent variable
-
-    Returns:
-        y: double, the value of the function at x
-    """
-    y = x**3 + x**2 - 3*x - 3
-    return y
+    return x**3 + x**2 - 3*x - 3
 
 
 if __name__ == '__main__':
-    iter_ls = one_point_chord(x=[1.5, 2], func=f, tol=1e-6)
-    for item in iter_ls:
-        print(item)
+    n, x = one_point_chord([1.5, 2], f, 1e-6)
+    print(f"The root of the non-linear equation is {x:.7f} by one point chord.")
+    print(f"Iteration number is {n}.")
 
