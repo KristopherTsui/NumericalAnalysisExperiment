@@ -1,57 +1,55 @@
 import math
 
 
-def dichotomy(intev, func, tol):
-    """ Solve non-linear equation by dichotomy
+def dichotomy(inte, func, tol=1e-9):
+    """ Solve non-linear equation by dichotomy.
 
     Args:
-        intev: list/ndarry, the inteval with zero
-        func: the equation to be solved
-        tol: double, the iteration accurancy
+        inte: list/ndarry, the interval with zero
+        func: function object, the equation to be solved
+        tol: double, the iteration accuracy
 
     Returns:
-        info_dict: dictionary, contains the endpoints of the inteval, the value of midpoint
-        and the function value of the midpoint
+        info_dict: dictionary, containing the endpoints of the inteval, the value of midpoint
+                   and the function value of the midpoint
+        x: double, root of the quation
     """
-    # the endpoints of the inteval
-    a, b = intev
+    # the endpoints of the interval
+    a, b = inte
+
     # the number of the iteration
     N = math.ceil(math.log2((b - a)/tol))
-    x = (a + b)/2
-    # begin iteration
+
+    # first iteration
     n = 1
+    x = (a + b)/2
+    # iteration information
+    info_dict = {n: [a, b, x, func(x)]}
 
-    info_dict = {}
+    # iteration
     while func(x) != 0 and n < N:
-        info_dict[n] = [a, b, x, func(x)]
+        n += 1
 
-        if func(a)*func(x) < 0:
+        if func(a) * func(x) < 0:
             b = x
         else:
             a = x
 
         x = (a + b)/2
-        n += 1
+        info_dict[n] = [a, b, x, func(x)]
 
-    return info_dict
+    return info_dict, x
 
 
 def f(x):
-    """ the equation to be solved
-    
-    Args:
-        x: double, independent variable
-
-    Returns:
-        y: double, the value of the function at x
-    """
-    y = x**3 + x**2 - 3*x - 3
-    return y
+    return x**3 + x**2 - 3*x - 3
 
 
 if __name__ == '__main__':
     # Find the root of the equation f(x)=0 around 1.5 by dichotomy
-    info_dict = dichotomy(intev=[1,2], func=f, tol=1e-6)
+    # the interval with zero is [1, 2]
+    info_dict, x = dichotomy([1,2], f, 1e-6)
     for key, value in info_dict.items():
         print(f"{key}\t[{value[0]:.7f}, {value[1]:.7f}]\t{value[2]:.7f}\t{value[3]:.7f}")
+    print(f"The root of the equation is {x:.7f}.")
 
