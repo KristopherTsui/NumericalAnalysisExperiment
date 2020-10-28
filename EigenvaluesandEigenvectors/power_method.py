@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def power_method(A, ini_vec=[1, 1, 1], tol=1e-9, Max_iter=100):
+def power_method(A, ini_vec, tol=1e-9, Max_iter=100):
     """ Calculate maximum eigenvalue of matrix A by power method.
 
     Args:
         A: ndarray, the matrix to be solved
-        ini_vec: list, the initial eigenvector
+        ini_vec: list/ndarray, the initial eigenvector
         tol: double, iteration accuracy
         Max_iter: int, maximum iteration number
 
@@ -51,7 +51,7 @@ def acceleration_power_method(A, alpha, tol=1e-9, Max_iter=100):
     B = A - alpha * np.eye(A.shape[0])
     
     # power method
-    k, eig, eigv = power_method(B, [1, 1, 1], tol, Max_iter)
+    k, eig, eigv = power_method(B, np.ones(A.shape[0]), tol, Max_iter)
 
     eig += alpha
 
