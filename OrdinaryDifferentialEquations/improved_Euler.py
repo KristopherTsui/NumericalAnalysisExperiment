@@ -44,13 +44,15 @@ def improved_Euler(x, func, ini):
 
 
 def f1(x, y):
-    f = y**2
-    return y
+    return y**2
 
 
 def f2(x, y):
-    f = x/y
-    return f
+    return x/y 
+
+
+def g(x, y):
+    return np.sin(x)/x
 
 
 if __name__ == '__main__':
@@ -71,4 +73,10 @@ if __name__ == '__main__':
     print("The numerical solution, analytic solution and the error of question 2 are as follows:")
     for item in zip(x2, y2, y2_true):
         print(f"{item[0]:.1f}\t{item[1]:.6f}\t{item[2]:.6f}\t{item[2] - item[1]:.6f}")
+
+    # thinking question
+    # calculate the integral \int_0^1 \frac{\sin x}{x} dx
+    x3 = split([1e-32, 1], 0.01)
+    y3 = improved_Euler(x3, g, 0)
+    print(f"The value of Si(1) is {y3[-1]:.5f}.")
 
