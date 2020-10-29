@@ -1,10 +1,11 @@
-import sympy as sp
 from sympy.abc import x
+import sympy as sp
 import numpy as np
+from lagrange_interpolation import lagrange_interpolation
 
 
 def split(inte, n):
-    """ Split the interval
+    """ Split the interval.
 
     Args:
         inte: list/ndarray, the interval to be splited
@@ -20,45 +21,7 @@ def split(inte, n):
 
 
 def f(t):
-    """ The original function to be interpolated
-
-    Args:
-        t: double, independent variable
-
-    Returns:
-        double, the value of f(x)
-    """
     return 1/(1 + t**2)
-
-
-def lagrange_interpolation(t, y):
-    """ Lagrange interpolation polinomials
-
-    Args:
-        t: list/ndarray, the interpolation points
-        y: list/ndarray, the value of the interpolated function at every point
-
-    Returns:
-        L: sympy object, the Lagrange interpolation polinomials
-    """
-    # the number of the interpolation points
-    n = len(t)
-
-    # Lagrange interpolation polinomial
-    L = 0
-    # iteration
-    for i in range(n):
-        # the base function of Lagrange interpolation polinomial
-        l = y[i]
-        for j in range(n):
-            if j == i:
-                continue
-            else:
-                l *= (x - t[j]) / (t[i] - t[j])
-
-        L += l
-
-    return sp.simplify(L)
 
 
 def draw_polinomial(inte, func, lst):
@@ -88,7 +51,7 @@ def draw_polinomial(inte, func, lst):
 
 
 def piecewise_linear_interpolation(t, y):
-    """ Piecewise linear interpolation
+    """ Piecewise linear interpolation.
     
     Args:
         t: list/ndarray, the split of the interval
@@ -113,15 +76,16 @@ def draw_piecewise(inte, func, lst):
     """ Draw the piecewise linear interpolation function and original function
 
     Args:
-        y: symbol object, the piecewise linear interpolation function
-        func: symbol object, the original function
-        file_name: string, the name of figure name
+        inte: list/ndarray, the interpolatin interval
+        func: function object, the original function to be interpolated
+        lst: list/ndarray, list of interpolation endpoints number
     """
     # draw the original function
     fig = sp.plot(func(x), (x, -5, 5), line_color='r', label='Original Fuction', legend=True, show=False)
     # control color
     i = 0
     colors = ['b', 'y', 'g']
+
     for n in lst:
         # piecewice linear interpolation
         t = split(inte, n)
@@ -131,6 +95,7 @@ def draw_piecewise(inte, func, lst):
         i += 1
         p = sp.plot(y, (x, -5, 5), line_color=color, label=f'n={n}', lengend=True, show=False)
         fig.extend(p)
+
     fig.save('piecewise_interpolation.png')
     
 
