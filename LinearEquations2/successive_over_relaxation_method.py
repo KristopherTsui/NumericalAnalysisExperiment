@@ -55,7 +55,7 @@ def print_solution_and_iteration_number(x, n):
 
 if __name__ == '__main__':
     # coefficients matrix
-    A = np.array([[-4, 1, 1, 1], [1, -4, 1, 1], [1, 1, -4, 1], [1, 1, 1, 1 -4]])
+    A = np.array([[-4, 1, 1, 1], [1, -4, 1, 1], [1, 1, -4, 1], [1, 1, 1, -4]])
     # constant vector
     b = np.ones(4)
     # Jacobi iteration method
@@ -67,9 +67,9 @@ if __name__ == '__main__':
     print("The solution of the linear equations by Gauss Seidel iteration method is:")
     print_solution_and_iteration_number(x2, n2)
     # successive over relaxation method
-    # when selecting the hyperrelaxation factor, it should be between 1.285 and 1.307
+    # when selecting the hyperrelaxation factor, it should be between 1.2 and 1.3
     # then the minumum iteration number is 21
-    x3, n3 = successive_over_relaxation(A, b, 1.3)
+    x3, n3 = successive_over_relaxation(A, b, 1.2)
     print("The solution of the linear equations by successive over relaxation method is:")
     print_solution_and_iteration_number(x3, n3)
 
