@@ -13,12 +13,14 @@ int main()
 	double a[N][N] = {{5, 2, 1}, {2, 8, -3}, {1, -3, -6}};
 	// constant vector
 	double b[N] = {8, 21, 1};
-	// iteration accuracy
-	double e = 1e-5;
+	/*
+	double a[N][N] = {{-4, 1, 1, 1}, {1, -4, 1, 1}, {1, 1, -4, 1}, {1, 1, 1, -4}};
+	double b[N] = {1, 1, 1, 1};
+	 */
 	// solution vector
 	double x[N];
 	// Jacobi iteration method
-	jacobi_iteration(a, b, x, e);
+	jacobi_iteration(a, b, x, 1e-5);
 	
 	return 0;
 }
