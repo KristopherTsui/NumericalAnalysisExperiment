@@ -92,7 +92,7 @@ def nine_points_difference_scheme(x_inte, y_inte, M, N, func1, func2, func3, fun
                 else:
                     b[i, j] = 0
 
-    U = (np.linalg.inv(A) @ b.reshape(-1, 1)).reshape(M-1, N-1).T
+    U = (np.linalg.inv(A) @ b.T.reshape(-1, 1)).reshape(M-1, N-1)
 
     # show approximate solution
     x1 = np.arange(x_inte[0]+(x_inte[1]-x_inte[0])/M, x_inte[1], (x_inte[1]-x_inte[0])/M)
