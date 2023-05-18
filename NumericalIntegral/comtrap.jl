@@ -1,9 +1,9 @@
 """
-    comsimp(func::Function, a::Real, b::Real, n::Integer)
+    comtrap(func::Function, a::Real, b::Real, n::Integer)
 
-Numerically approximate the integral of func from `a` to `b` using Simpson's composite rule.
+Numerically approximate the integral of func from `a` to `b` using composite trapezoidal rule.
 
-See also [`simpson`], [`adapsimp`].
+See also [`adapsimp`].
 
 # Arguments
 
@@ -17,26 +17,23 @@ If `a = b`, throw a Warning and return 0; if `a > b`, swap `a` and `b` to ensure
 
 # Outputs
 
-* `s::Float64`: `s` is the approximation of integral.
+* `t::Float64`: `t` is the approximation of integral.
 
 # Examples
 
 ```julia-repl
-julia> comsimp(log, 1, 2, 1)
-Error: n is greater than or equal to 2!
+julia> comtrap(cos, 0, 2, 1)
+Error: n is greater than or equal 2!
 
-julia> comsimp(cos, 0, 0, 4)
+julia> comtrap(sin, 0, 0, 4)
 Warning: The limits of integration are equal!
 0
 
-julia> comsimp(sin, 0, pi/2, 4)
-1.0001345849741938
-
-julia> comsimp(x->exp(-x^2), 1, 0, 4)
-0.7468553797909873
+julia> comsimp(log, 1, 2, 8)
+0.3856439099520953
 ```
 """
-function comsimp(func::Function, a::Real, b::Real, n::Integer)
+function comtrap(func::Function, a::Real, b::Real, n::Integer)
     if n < 2
         @error "n is greater than or equal to 2!"
         return
@@ -49,17 +46,12 @@ function comsimp(func::Function, a::Real, b::Real, n::Integer)
     end
 
     h = (b - a) / n
-    s0 = func(a) + func(b)
-    s1 = 0      # summation of f(x_{2k-1})
-    s2 = 0      # summation of f(x_{2k})
+    t0 = func(a) + func(b)
+    t1 = 0;
     for k = 1:n-1
         x = a + k * h
-        if rem(k, 2) == 0
-            s2 = s2 + func(x)
-        else
-            s1 = s1 + func(x)
-        end
+        t1 = t1 + 2 * func(x)
     end
-    s = h * (s0 + 4 * s1 + 2 * s2) / 3
-    return s
+    t = h * (t0 + t1) / 2
+    return t
 end
